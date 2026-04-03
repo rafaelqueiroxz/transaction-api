@@ -27,6 +27,9 @@ public class StatisticsService {
         // A method that retrieves transactions from the transactionServices
         // and stores the data in a list.
         log.info("The search for transaction statistics for the time period of " + rangeSearch + " has begun.");
+
+        long start =  System.currentTimeMillis();
+
         List<TransactionRequestDTO> transactions = transactionService.searchTransactions(rangeSearch);
 
         if (transactions.isEmpty()) {
@@ -38,6 +41,11 @@ public class StatisticsService {
         // to DoubleSummaryStatistics.
         DoubleSummaryStatistics transactionsStatistics = transactions.stream()
                 .mapToDouble(TransactionRequestDTO::value).summaryStatistics();
+
+
+        long finish = System.currentTimeMillis();
+        long requestTime = finish - start;
+        System.out.println("Request time: " + requestTime + " ms");
 
         // Returns all transaction statistics calculated by summaryStatistics.
         log.info("Statistics returned successfully.");
